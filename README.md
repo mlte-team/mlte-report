@@ -49,4 +49,3 @@ Verify the `yarn` installation:
 ```bash
 yarn --version
 ```
-
