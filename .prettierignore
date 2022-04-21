@@ -1,0 +1,5 @@
+build/*
+public/*
+config/*
+scripts/*
+bootstrap.min.css
