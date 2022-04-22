@@ -77,7 +77,7 @@ const generateHTML = (document) => {
   );
 
   const customStyles = fs.readFileSync(
-    path.resolve("./build/index.css"),
+    path.resolve("./src/index.css"),
     "utf-8"
   );
 

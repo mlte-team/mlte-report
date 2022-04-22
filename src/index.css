@@ -1,5 +1,1 @@
-@media print {
-  .card {
-    break-inside: avoid;
-  }
-}
+.whole_page {background-color: black;}

@@ -88,6 +88,12 @@ class App extends React.Component {
       },
     ];
 
+    const logo = (
+      <div className="col">
+        <img src="https://afcwebsite.blob.core.usgovcloudapi.net/uploads/assets/A2_IC_Logo_2dd34dd7bf.png"></img>
+      </div>
+    );
+
     const title = (
       <div className="col">
         <div className="card border-0">
@@ -112,8 +118,9 @@ class App extends React.Component {
     );
 
     return (
-      <div className="container">
+      <div className="container whole_page">
         <div className="row">
+          {logo}
           {title}
           {metadata}
         </div>
