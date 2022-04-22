@@ -88,18 +88,19 @@ class App extends React.Component {
       },
     ];
 
-    const logo = (
-      <div className="col">
-        <img src="https://afcwebsite.blob.core.usgovcloudapi.net/uploads/assets/A2_IC_Logo_2dd34dd7bf.png"></img>
-      </div>
-    );
-
     const title = (
       <div className="col">
         <div className="card border-0">
           <div className="card-body">
-            <h1>{modelName}</h1>
-            <h3>MLTE Report</h3>
+            <div className="row">
+              <div className="col">
+              <img id="logo" src="https://raw.githubusercontent.com/mlte-team/mlte-report/master/assets/ai2c_logo.png"></img>
+              </div>
+              <div className="col">
+                <h1>{modelName}</h1>
+                <h3>MLTE Report</h3>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -120,7 +121,6 @@ class App extends React.Component {
     return (
       <div className="container whole_page">
         <div className="row">
-          {logo}
           {title}
           {metadata}
         </div>
