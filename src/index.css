@@ -1,5 +1,5 @@
-.whole_page {background-color: black;}
-#logo {  
-  width: 120px;  
-  height: auto;  
-  } 
+.page_style {background-color: black;}
+.title_style {color: white; text-align: center;}
+.meta_style {color: white; text-align: right; font-size: smaller;}
+.header_style {background-color: black; box-sizing:content-box;}
+.logo_style {width: 130px;}

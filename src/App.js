@@ -88,18 +88,25 @@ class App extends React.Component {
       },
     ];
 
-    const title = (
-      <div className="col">
+    const emblem = (
+      <div className="col title_style">
         <div className="card border-0">
-          <div className="card-body">
+          <div className="card-body header_style">
+            <div className="row logo_style">
+              <img src="https://raw.githubusercontent.com/mlte-team/mlte-report/master/assets/ai2c_logo.png"></img>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+
+    const title = (
+      <div className="col title_style">
+        <div className="card border-0">
+          <div className="card-body header_style">
             <div className="row">
-              <div className="col">
-              <img id="logo" src="https://raw.githubusercontent.com/mlte-team/mlte-report/master/assets/ai2c_logo.png"></img>
-              </div>
-              <div className="col">
                 <h1>{modelName}</h1>
                 <h3>MLTE Report</h3>
-              </div>
             </div>
           </div>
         </div>
@@ -107,9 +114,9 @@ class App extends React.Component {
     );
 
     const metadata = (
-      <div className="col">
+      <div className="col meta_style">
         <div className="card border-0">
-          <div className="card-body">
+          <div className="card-body header_style">
             <p>Authors: Foo Bar, Foo Bar, Foo Bar</p>
             <p>Source URL: https://github.com/mlte-team</p>
             <p>Artifact URL: https://github.com/mlte-team</p>
@@ -119,8 +126,9 @@ class App extends React.Component {
     );
 
     return (
-      <div className="container whole_page">
+      <div className="container page_style">
         <div className="row">
+          {emblem}
           {title}
           {metadata}
         </div>
