@@ -50,4 +50,9 @@ Verify the `yarn` installation:
 yarn --version
 ```
 
+### Routine Setup
+```bash
+export NODE_ENV="development"
+```
+
 `mlte-report` draws structural elements from work done in [Mitchell et al.](https://arxiv.org/pdf/1810.03993.pdf)
