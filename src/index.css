@@ -1,19 +1,28 @@
 .page_style {
   background-color: black;
+  padding-bottom: "5%";
 }
+
 .title_style {
   color: white;
   text-align: center;
 }
+
 .meta_style {
   color: white;
   text-align: right;
   font-size: smaller;
 }
+
 .header_style {
   background-color: black;
   box-sizing: content-box;
 }
+
 .logo_style {
   width: 130px;
+}
+
+.custom_table {
+  background-color: white;
 }

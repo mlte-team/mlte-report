@@ -29,7 +29,7 @@ class App extends React.Component {
    */
   renderCard(title, sections) {
     return (
-      <div key={title} className="card border-dark m-2 pagebreak">
+      <div key={title} className="card border-dark m-2">
         <h5 className="card-header">{title}</h5>
         <div className="card-body">
           {sections.map((section, index) =>
@@ -165,32 +165,28 @@ class App extends React.Component {
     cards.push({
       key: "IntendedUsers",
       title: "Intended Users",
-      sections: [
-        considerations["users"].map((item) => {
-          return { title: item["identifier"], content: item["description"] };
-        }),
-      ],
+      sections: considerations["users"].map((item) => {
+        return { title: item["identifier"], content: item["description"] };
+      }),
     });
 
     // Use cases
-    const useCases = considerations["use_cases"].map((item, index) => {
-      return {
-        key: `UseCase${index}`,
-        title: "Use Case",
-        sections: [{ title: item["identifier"], content: item["description"] }],
-      };
+    cards.push({
+      key: "UseCases",
+      title: "Use Cases",
+      sections: considerations["use_cases"].map((item) => {
+        return { title: item["identifier"], content: item["description"] };
+      }),
     });
-    cards.push(...useCases);
 
     // Limitations
-    const limitations = considerations["limitations"].map((item, index) => {
-      return {
-        key: `Limitation${index}`,
-        title: "Limitation",
-        sections: [{ title: item["identifier"], content: item["description"] }],
-      };
+    cards.push({
+      key: "Limitations",
+      title: "Limitations",
+      sections: considerations["limitations"].map((item) => {
+        return { title: item["identifier"], content: item["description"] };
+      }),
     });
-    cards.push(...limitations);
 
     return (
       <>
@@ -206,12 +202,91 @@ class App extends React.Component {
   }
 
   /**
+   * Render a row of the suite results table.
+   * @param {*} key The item key
+   * @param {*} propertyName The name of the property
+   * @param {*} measurementName The name of the measurement
+   * @param {*} validatorName The name of the validator
+   * @param {*} result The result of the validator
+   * @param {*} message The associated message
+   * @return JSX content
+   */
+  renderTableRow(
+    key,
+    propertyName,
+    measurementName,
+    validatorName,
+    result,
+    message
+  ) {
+    // TODO(Kyle): Support other result types
+    const className =
+      result.toLowerCase() == "success" ? "table-success" : "table-danger";
+    return (
+      <tr key={key}>
+        <td className={className}>{result}</td>
+        <td>{propertyName}</td>
+        <td>{measurementName}</td>
+        <td>{validatorName}</td>
+        <td>{message}</td>
+      </tr>
+    );
+  }
+
+  /**
    * Render the results of the suite report.
    * @param document The JSON document
    * @return JSX content
    */
   renderReportSuite(document) {
-    return <></>;
+    const results = document["suite"]["properties"]
+      .map((property) => {
+        return property["measurements"].map((measurement) => {
+          return measurement["validators"].map((validator) => {
+            return {
+              key: `${property["name"]}${measurement["name"]}${validator["name"]}`,
+              property: property["name"],
+              measurement: measurement["name"],
+              validator: validator["name"],
+              result: validator["result"],
+              message: validator["message"],
+            };
+          });
+        });
+      })
+      .flat(3);
+
+    return (
+      <div className="row">
+        <div className="col">
+          <div className="card m-2">
+            <table className="table custom_table" style={{ marginBottom: 0 }}>
+              <thead>
+                <tr>
+                  <th scope="col">Status</th>
+                  <th scope="col">Property</th>
+                  <th scope="col">Measurement</th>
+                  <th scope="col">Validator</th>
+                  <th scope="col">Message</th>
+                </tr>
+              </thead>
+              <tbody>
+                {results.map((item) =>
+                  this.renderTableRow(
+                    item["key"],
+                    item["property"],
+                    item["measurement"],
+                    item["validator"],
+                    item["result"],
+                    item["message"]
+                  )
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   /**
