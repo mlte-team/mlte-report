@@ -9,11 +9,12 @@ class App extends React.Component {
    */
   renderSection(title, content, index) {
     const className = index == 0 ? "" : "card-title";
+    const titleContent = title == "" ? <></> : <strong>{`${title} `}</strong>;
     return (
-      <div key={title}>
+      <div key={`${title}${index}`}>
         <div className={className}></div>
         <p className="card-text">
-          <strong>{`${title} `}</strong>
+          {titleContent}
           {content}
         </p>
       </div>
@@ -32,7 +33,7 @@ class App extends React.Component {
         <h5 className="card-header">{title}</h5>
         <div className="card-body">
           {sections.map((section, index) =>
-            this.renderSection(section[0], section[1], index)
+            this.renderSection(section["title"], section["content"], index)
           )}
         </div>
       </div>
@@ -40,53 +41,22 @@ class App extends React.Component {
   }
 
   /**
-   * Render the application.
-   * @returns JSX content
+   * Render the report title.
+   * @param document The JSON document
+   * @return JSX content
    */
-  render() {
-    // The JSON document passed to the invocation
-    // console.log(this.props)
-    // console.log(this.props.document)
-    const document = this.props.document;
-    const string = `Key = ${document["key"]}`;
+  renderTitle(document) {
+    // The report metadata
+    const metadata = document["metadata"];
 
-    const modelName = "Model Name";
-
-    const content =
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce sodales eu ligula ac tempus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. In erat tortor, feugiat quis hendrerit non, varius sit amet diam. Pellentesque quis massa non purus volutpat luctus. Duis eu tellus consequat, efficitur velit et, mollis ante. Praesent facilisis nulla in neque lacinia, non vestibulum mi sagittis.";
-
-    const cards = [
-      {
-        title: "Attribute 0",
-        sections: [
-          ["Section 0", content],
-          ["Section 1", content],
-        ],
-      },
-      {
-        title: "Attribute 1",
-        sections: [
-          ["Section 0", content],
-          ["Section 1", content],
-          ["Section 2", content],
-        ],
-      },
-      {
-        title: "Attribute 2",
-        sections: [
-          ["Section 0", content],
-          ["Section 1", content],
-          ["Section 2", content],
-        ],
-      },
-      {
-        title: "Attribute 3",
-        sections: [
-          ["Section 0", content],
-          ["Section 1", content],
-        ],
-      },
-    ];
+    // The name of the project
+    const modelName = document["model_details"]["name"];
+    // The authors of the report
+    const authors = metadata["authors"].join(", ");
+    // The source code URL
+    const sourceURL = metadata["source_url"];
+    // The artifacts URL
+    const artifactsURL = metadata["artifacts_url"];
 
     const emblem = (
       <div className="col title_style">
@@ -105,40 +75,158 @@ class App extends React.Component {
         <div className="card border-0">
           <div className="card-body header_style">
             <div className="row">
-                <h1>{modelName}</h1>
-                <h3>MLTE Report</h3>
+              <h1>{modelName}</h1>
+              <h3>MLTE Report</h3>
             </div>
           </div>
         </div>
       </div>
     );
 
-    const metadata = (
+    const contactInformation = (
       <div className="col meta_style">
         <div className="card border-0">
           <div className="card-body header_style">
-            <p>Authors: Foo Bar, Foo Bar, Foo Bar</p>
-            <p>Source URL: https://github.com/mlte-team</p>
-            <p>Artifact URL: https://github.com/mlte-team</p>
+            <p>{`Authors: ${authors}`}</p>
+            <p>{`Source URL: ${sourceURL}`}</p>
+            <p>{`Artifact URL: ${artifactsURL}`}</p>
           </div>
         </div>
       </div>
     );
 
     return (
-      <div className="container page_style">
-        <div className="row">
-          {emblem}
-          {title}
-          {metadata}
-        </div>
+      <div className="row">
+        {emblem}
+        {title}
+        {contactInformation}
+      </div>
+    );
+  }
+
+  /**
+   * Render the body of the report (excluding suite).
+   * @param document The JSON document
+   * @returns JSX content
+   */
+  renderReportBody(document) {
+    // Populate cards with body of report
+    let cards = [];
+
+    // Model overview
+    cards.push({
+      key: "ModelOverview",
+      title: "Model Overview",
+      sections: [{ title: "", content: document["model_details"]["overview"] }],
+    });
+
+    // Model documentation
+    cards.push({
+      key: "ModelDocumentation",
+      title: "Model Documentation",
+      sections: [
+        {
+          title: "",
+          content: document["model_details"]["documentation"],
+        },
+      ],
+    });
+
+    // Model specification
+    const spec = document["model_specification"];
+    cards.push({
+      key: "ModelSpecification",
+      title: "Model Specification",
+      sections: [
+        { title: "Domain", content: spec["domain"] },
+        { title: "Architecture", content: spec["architecture"] },
+        { title: "Input", content: spec["input"] },
+        { title: "Output", content: spec["output"] },
+      ],
+    });
+
+    // Dataset description
+    const datasets = spec["data"].map((item, index) => {
+      return {
+        key: `DatasetDescriptor${index}`,
+        title: "Dataset Descriptor",
+        sections: [
+          { title: "Identifier", content: item["name"] },
+          { title: "Link", content: item["link"] },
+          { title: "Description", content: item["description"] },
+        ],
+      };
+    });
+    cards.push(...datasets);
+
+    const considerations = document["considerations"];
+
+    // Intended users
+    cards.push({
+      key: "IntendedUsers",
+      title: "Intended Users",
+      sections: [
+        considerations["users"].map((item) => {
+          return { title: item["identifier"], content: item["description"] };
+        }),
+      ],
+    });
+
+    // Use cases
+    const useCases = considerations["use_cases"].map((item, index) => {
+      return {
+        key: `UseCase${index}`,
+        title: "Use Case",
+        sections: [{ title: item["identifier"], content: item["description"] }],
+      };
+    });
+    cards.push(...useCases);
+
+    // Limitations
+    const limitations = considerations["limitations"].map((item, index) => {
+      return {
+        key: `Limitation${index}`,
+        title: "Limitation",
+        sections: [{ title: item["identifier"], content: item["description"] }],
+      };
+    });
+    cards.push(...limitations);
+
+    return (
+      <>
         {cards.map((def) => (
-          <div key={def["title"]} className="row">
+          <div key={def["key"]} className="row">
             <div className="col">
               {this.renderCard(def["title"], def["sections"])}
             </div>
           </div>
         ))}
+      </>
+    );
+  }
+
+  /**
+   * Render the results of the suite report.
+   * @param document The JSON document
+   * @return JSX content
+   */
+  renderReportSuite(document) {
+    return <></>;
+  }
+
+  /**
+   * Render the application.
+   * @returns JSX content
+   */
+  render() {
+    // The JSON document passed to the invocation
+    const document = this.props.document;
+
+    return (
+      <div className="container page_style">
+        {this.renderTitle(document)}
+        {this.renderReportBody(document)}
+        {this.renderReportSuite(document)}
       </div>
     );
   }
