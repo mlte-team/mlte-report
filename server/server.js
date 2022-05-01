@@ -33,9 +33,9 @@ const generateHTML = (document) => {
     "utf-8"
   );
 
-  // TODO(Kyle): Change to read from build
+  // Read out custom styles from build
   const customStyles = fs.readFileSync(
-    path.resolve("./src/index.css"),
+    path.resolve("./build/index.css"),
     "utf-8"
   );
 

@@ -45,6 +45,17 @@ run-prod:
 hit-prod:
 	curl -X POST -H "Content-Type: application/json" -d @data/report.json localhost:8000/html > out.html
 
+# -----------------------------------------------------------------------------
+# Image Construction
+
+# Build the image and push to ECR
+.PHONY: push
+push:
+	./scripts/push.sh
+
+# -----------------------------------------------------------------------------
+# Development
+
 # Format source
 .PHONY: format
 format:
