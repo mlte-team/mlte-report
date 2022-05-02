@@ -56,4 +56,6 @@ yarn --version
 export NODE_ENV="development"
 ```
 
-`mlte-report` draws structural elements from work done in [Mitchell et al.](https://arxiv.org/pdf/1810.03993.pdf)
+### Acknowledgements
+
+`mlte-report` draws structural elements from work done in [Mitchell et al.](https://arxiv.org/pdf/1810.03993.pdf). Specifically, many of the sections of our report are inspired by the vision provided by the Model Card project. This will remain true even as the precise contents of our report change over time. 
