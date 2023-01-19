@@ -220,8 +220,12 @@ class App extends React.Component {
     message
   ) {
     // TODO(Kyle): Support other result types
-    const className =
-      result.toLowerCase() == "success" ? "table-success" : "table-danger";
+    let className = "table-success";
+    if (result.toLowerCase() == "ignore") {
+      className = "table-warning";
+    } else if (result.toLowerCase() == "failure") {
+      className = "table-danger";
+    }
     return (
       <tr key={key}>
         <td className={className}>{result}</td>
@@ -239,7 +243,7 @@ class App extends React.Component {
    * @return JSX content
    */
   renderReportSuite(document) {
-    const results = document["suite"]["properties"]
+    const results = document["spec"]["properties"]
       .map((property) => {
         return property["measurements"].map((measurement) => {
           return measurement["validators"].map((validator) => {
