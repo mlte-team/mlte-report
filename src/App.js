@@ -55,8 +55,8 @@ class App extends React.Component {
     const authors = metadata["authors"].join(", ");
     // The source code URL
     const sourceURL = metadata["source_url"];
-    // The artifacts URL
-    const artifactsURL = metadata["artifacts_url"];
+    // The artifact URL
+    const artifactURL = metadata["artifact_url"];
 
     const emblem = (
       <div className="col title_style">
@@ -89,7 +89,7 @@ class App extends React.Component {
           <div className="card-body header_style">
             <p>{`Authors: ${authors}`}</p>
             <p>{`Source URL: ${sourceURL}`}</p>
-            <p>{`Artifact URL: ${artifactsURL}`}</p>
+            <p>{`Artifact URL: ${artifactURL}`}</p>
           </div>
         </div>
       </div>
